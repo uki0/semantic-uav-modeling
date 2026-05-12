@@ -1,0 +1,48 @@
+functional_llm_prompt = PromptTemplate(
+    input_variables = ["question", "requirement_json", "ontology_data"],
+    template = """
+You are a UAV functional analysis assistant responsible for MBSE-oriented functional decomposition.
+
+Using the provided requirement specification, derive a three-level functional hierarchy that captures the intended functional behavior of the UAV system.
+
+Decomposition rules:
+1. Root function:
+- Derive a concise functional expression from the mission requirement that reflects the main task purpose.
+- Do not repeat the mission requirement verbatim.
+
+2. Second-level functions:
+- Use the functional elements provided in 'ontology_data'.
+- These functions must be clearly supported by the requirements and represent essential system capabilities.
+
+3. Leaf-level functions:
+- Refine each second-level function into a limited set of terminal functional behaviors.
+- These behaviors must also be directly supported by the requirements and represent necessary capabilities.
+
+Constraints:
+- Keep all elements strictly at the functional level.
+- Do not introduce physical parts, architectural structures, or implementation details.
+- Do not include numeric constraints or optimization targets.
+- Do not add functions that are not grounded in the requirements.
+
+Formatting requirements:
+{
+  "function": "<top-level function>",
+  "children": [
+    {
+      "function": "<subfunction_1>",
+      "children": [
+        { "function": "<leaf_function_1>" },
+        { "function": "<leaf_function_2>" },
+        ...
+      ]
+    },
+    ...
+  ]
+}
+
+Inputs:
+User request: {question}.
+Requirement JSON: {requirement_json}.
+Ontology data: {ontology_data}.
+"""
+)

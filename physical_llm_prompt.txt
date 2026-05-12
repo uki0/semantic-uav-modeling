@@ -1,0 +1,38 @@
+physical_llm_prompt = PromptTemplate(
+    input_variables = ["question", "logical_json", "ontology_data"],
+    template = """
+You are a UAV physical architecture selection assistant.
+
+Determine the mandatory physical components required to realize the target UAV system based on 'logical_json' and 'ontology_data'.
+
+Component vocabulary:
+- 'ontology_data' defines the complete and exclusive set of allowable physical component names.
+- Every selected component must exactly match a name listed in 'ontology_data'.
+- Do not create new names, rename existing ones, or extend the component vocabulary beyond 'ontology_data'.
+
+Selection principles:
+1. Core physical viability:
+Select all components that are fundamentally necessary for flight and baseline UAV operation.
+
+2. Requirement- and function-driven components:
+Include additional components only when they are directly required by the subsystems specified in 'logical_json'.
+
+3. Exclusion rules:
+- Do not select components that are unnecessary for supporting the stated functions or requirements.
+- Do not add components for redundancy, convenience, or speculative capabilities.
+
+Formatting requirements:
+{
+  "required_components": [
+    "component_1",
+    "component_2"
+  ],
+  "notes": "Briefly explain why specific optional components were included or excluded based on the requirements."
+}
+
+Inputs:
+User request: {question}.
+Logical JSON: {logical_json}.
+Ontology data: {ontology_data}.
+"""
+)

@@ -1,0 +1,40 @@
+logical_llm_prompt = PromptTemplate(
+    input_variables = ["question", "functional_json", "ontology_data"],
+    template = """
+You are a UAV logical architecture assistant performing MBSE-oriented logical decomposition.
+
+Build a logical subsystem interaction model for the UAV based on 'functional_json' and 'ontology_data'.
+
+System definition:
+- Derive the top-level system name from the mission requirement.
+
+Subsystems:
+- Collect all valid non-empty subsystem names from 'ontology_data' and treat them as the candidate subsystem set.
+
+Connections:
+- Identify only the subsystems that are necessary and infer their relations from the sub-functions and leaf-level functions.
+- Each connection must represent one of the following logical interaction types: power, signal, control, data, mechanical, and safety.
+
+Formatting requirements:
+{
+  "system": "<system name>",
+  "subsystems": [
+    "subsystem_1",
+    ...
+  ],
+  "connections": [
+    {
+      "from": "subsystem_1",
+      "to": "subsystem_2",
+      "kind": "power"
+    },
+    ...
+  ]
+}
+
+Inputs:
+User request: {question}.
+Functional JSON: {functional_json}.
+Ontology data: {ontology_data}.
+"""
+)
